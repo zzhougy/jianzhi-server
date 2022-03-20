@@ -3,6 +3,10 @@
 #### 介绍
 校园兼职平台-服务端
 
+校园兼职平台-门户 https://github.com/zzhougy/jianzhi-portal.git
+
+校园兼职平台-webim https://github.com/zzhougy/jianzhi-webim.git
+
 #### 软件架构
 软件架构说明
 
