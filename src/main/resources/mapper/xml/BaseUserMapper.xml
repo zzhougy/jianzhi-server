@@ -1,0 +1,52 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhou.jianzhi.mapper.BaseUserMapper">
+    <resultMap id="userJoinEmpList" type="com.zhou.jianzhi.entity.vo.BaseUserVO">
+        <id column="id" property="id"/>
+        <collection property="sysRoleVOS" select="selectRolesByUserId" column="id"/>
+    </resultMap>
+
+
+    <select id="queryList" resultMap="userJoinEmpList">
+        select u.id,u.username,u.create_time,u.status,a.name,a.phone,a.dept_name,a.dept_id
+        from base_user u left join
+        (
+        select
+        be.id,be.name,be.username,be.dept_id,be.position_name,be.phone,be.email,bd.dept_name
+        from base_employee be left JOIN base_department bd
+        on be.dept_id=bd.dept_id
+        ) a
+        on u.emp_id=a.id
+        <where>
+            type = 1
+            <if test="user.name!=null and user.name!=''">
+                and a.name like concat('%',#{user.name},'%')
+            </if>
+            <if test="user.deptId!=null and user.deptId!=''">
+                and a.dept_id = #{user.deptId}
+            </if>
+            <if test="user.phone!=null and user.phone!=''">
+                and a.phone like concat('%',#{user.phone},'%')
+            </if>
+        </where>
+    </select>
+
+    <select id="queryByJoinEmp" resultType="com.zhou.jianzhi.entity.vo.BaseUserVO">
+        select u.id,u.username,u.create_time,u.status,a.name,a.phone,a.dept_name,a.dept_id
+        from base_user u left join
+        (
+        select
+        be.id,be.name,be.username,be.dept_id,be.position_name,be.phone,be.email,bd.dept_name
+        from base_employee be left JOIN base_department bd
+        on be.dept_id=bd.dept_id
+        ) a
+        on u.emp_id=a.id
+        where u.id= #{userId}
+    </select>
+
+
+    <select id="selectRolesByUserId" resultType="com.zhou.jianzhi.entity.vo.SysRoleVO">
+        select sr.id,sr.role_name,sr.remark,sr.status from sys_user_role sur left join sys_role sr on sur.role_id=sr.id  where sur.user_id=#{id}
+    </select>
+</mapper>

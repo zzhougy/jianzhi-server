@@ -1,0 +1,217 @@
+package ${package.ServiceImpl};
+
+import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import $!{cfg.packagePath}.common.AjaxResult;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import ${package.Entity}.${entity};
+import ${package.Mapper}.${table.mapperName};
+import ${package.Service}.${table.serviceName};
+import ${superServiceImplClassPackage};
+
+## ----------  把实体类首字母改成小写（得到属性名） ----------
+#set($entity = ${entity})
+#set($first_letter = $entity.substring(0,1).toLowerCase())
+#set($the_rest = $entity.substring(1))
+#set($propertyName= ${first_letter} + ${the_rest})
+
+
+/**
+ * ${table.name}Service业务层处理
+ *
+ * @author ${author}
+ * @date ${date}
+ */
+@Service
+@Transactional
+public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.mapperName}, ${entity}> implements ${table.serviceName} {
+
+    @Autowired
+    private ${table.mapperName} ${propertyName}Mapper;
+
+
+    /**
+     * 根据${table.name}表id查询
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public AjaxResult select${entity}ById(Integer id) {
+        ${entity} ${propertyName} = this.${propertyName}Mapper.selectById(id);
+        if (${propertyName}==null){
+            return AjaxResult.error("查不到");
+        }
+        return AjaxResult.success(${propertyName});
+    }
+
+	/**
+     * 根据条件查询返回一条${entity}信息
+     * @param ${propertyName}DTO
+     * @return
+     */
+    @Override
+    public AjaxResult selectOne${entity}(${entity}DTO ${propertyName}DTO) {
+        ${entity} ${propertyName} = new ${entity}();
+        BeanUtils.copyProperties(${propertyName}DTO,${propertyName});
+        QueryWrapper<${entity}> wrapper = new QueryWrapper<>();
+## ----------  BEGIN 字段循环遍历  ----------
+#foreach($field in ${table.fields})
+    #if(${field.propertyType.equals("String")})
+        wrapper.eq(!StrUtil.isBlank(${propertyName}.get${field.capitalName}()),"${field.annotationColumnName}",${propertyName}.get${field.capitalName}());
+    #elseif(${field.propertyType.equals("Integer")})
+        if(${propertyName}.get${field.capitalName}() != null){
+            wrapper.eq(!StrUtil.isBlank(${propertyName}.get${field.capitalName}().toString()),"${field.annotationColumnName}", ${propertyName}.get${field.capitalName}());
+        }
+    #elseif(${field.propertyType.equals("Long")})
+        if(${propertyName}.get${field.capitalName}() != null){
+            wrapper.eq(!StrUtil.isBlank(${propertyName}.get${field.capitalName}().toString()),"${field.annotationColumnName}", ${propertyName}.get${field.capitalName}());
+        }
+    #end
+#end
+## ----------  END 字段循环遍历  ----------
+        ${propertyName} = this.${propertyName}Mapper.selectOne(wrapper);
+        if (${propertyName}==null){
+            return AjaxResult.error("查不到");
+        }
+        return AjaxResult.success(${propertyName});
+    }
+
+    /**
+     * 查询${entity}列表
+     *
+     * @param ${propertyName}DTO
+     * @return
+     */
+    @Override
+    public AjaxResult select${entity}List(${entity}DTO ${propertyName}DTO) throws Exception {
+        Page<${entity}> page = new Page<>(${propertyName}DTO.getPageCurrent(),${propertyName}DTO.getPageSize());
+        ${entity} ${propertyName} = new ${entity}();
+        BeanUtils.copyProperties(${propertyName}DTO,${propertyName});
+        QueryWrapper<${entity}> wrapper = new QueryWrapper<>();
+## ----------  BEGIN 字段循环遍历  ----------
+#foreach($field in ${table.fields})
+    #if(${field.propertyType.equals("String")})
+        wrapper.eq(!StrUtil.isBlank(${propertyName}.get${field.capitalName}()),"${field.annotationColumnName}",${propertyName}.get${field.capitalName}());
+    #elseif(${field.propertyType.equals("Integer")})
+        if(${propertyName}.get${field.capitalName}() != null){
+            wrapper.eq(!StrUtil.isBlank(${propertyName}.get${field.capitalName}().toString()),"${field.annotationColumnName}", ${propertyName}.get${field.capitalName}());
+        }
+    #elseif(${field.propertyType.equals("Long")})
+        if(${propertyName}.get${field.capitalName}() != null){
+            wrapper.eq(!StrUtil.isBlank(${propertyName}.get${field.capitalName}().toString()),"${field.annotationColumnName}", ${propertyName}.get${field.capitalName}());
+        }
+    #end
+#end
+## ----------  END 字段循环遍历  ----------
+        Page<${entity}> Ipage = this.${propertyName}Mapper.selectPage(page, wrapper);
+        if (Ipage==null){
+            return AjaxResult.error();
+        }
+        return AjaxResult.success(Ipage);
+    }
+
+    /**
+    * 新增单个${entity}
+    *
+    * @param ${propertyName}DTO
+    * @return
+    */
+    @Override
+    public AjaxResult add${entity}(${entity}DTO ${propertyName}DTO) {
+        ${entity} ${propertyName} = new ${entity}();
+        BeanUtils.copyProperties(${propertyName}DTO,${propertyName});
+        int insertedNum = this.${propertyName}Mapper.insert(${propertyName});
+        if (insertedNum > 0){
+            return AjaxResult.success("新增成功");
+        }
+        return AjaxResult.error("新增失败");
+    }
+
+    /**
+     * 批量新增${entity}
+     *
+     * @param ${propertyName}DTOList
+     * @return 结果
+     */
+    @Override
+    public AjaxResult add${entity}List(List<${entity}DTO> ${propertyName}DTOList) throws Exception {
+        //添加操作
+        for (${entity}DTO ${propertyName}DTO : ${propertyName}DTOList){
+            ${entity} ${propertyName} = new ${entity}();
+            BeanUtils.copyProperties(${propertyName}DTO,${propertyName});
+            int insert = this.${propertyName}Mapper.insert(${propertyName});
+        }
+        return AjaxResult.success();
+    }
+
+    /**
+     * 根据id修改${entity}
+     *
+     * @param ${propertyName}DTO
+     * @return 结果
+     */
+    @Override
+    public AjaxResult update${entity}ById(${entity}DTO ${propertyName}DTO){
+        AjaxResult ajaxResult = select${entity}ById(${propertyName}DTO.getId());
+        if ((Integer) ajaxResult.get("code") == AjaxResult.Type.SUCCESS.value()){
+            ${entity} ${propertyName} = (${entity})ajaxResult.get("data");
+## ----------  BEGIN 字段循环遍历  ----------
+#foreach($field in ${table.fields})
+    #if(${field.propertyType.equals("String")})
+            if(${propertyName}DTO.get${field.capitalName}() != null && !${propertyName}DTO.get${field.capitalName}().isEmpty()){
+                ${propertyName}.set${field.capitalName}(${propertyName}DTO.get${field.capitalName}());
+            }
+    #elseif(${field.propertyType.equals("Integer")})
+            if(${propertyName}DTO.get${field.capitalName}() != null){
+                ${propertyName}.set${field.capitalName}(${propertyName}DTO.get${field.capitalName}());
+            }
+    #elseif(${field.propertyType.equals("Long")})
+            if(${propertyName}DTO.get${field.capitalName}() != null){
+                ${propertyName}.set${field.capitalName}(${propertyName}DTO.get${field.capitalName}());
+            }
+    #end
+#end
+## ----------  END 字段循环遍历  ----------
+            int updatedNum = this.${propertyName}Mapper.updateById(${propertyName});
+            if(updatedNum > 0){
+                return AjaxResult.success("修改成功");
+            }else{
+                return AjaxResult.error("修改失败");
+            }
+        }else {
+            return AjaxResult.error("数据不存在");
+        }
+    }
+
+    /**
+     * 根据id删除${entity}
+     *
+     * @param id 需要删除的${table.name}ID
+     * @return 结果
+     */
+    @Override
+    public AjaxResult delete${entity}ById(Integer id)
+    {
+        int delete = this.${propertyName}Mapper.deleteById(id);
+        if(delete<0){
+            return AjaxResult.error();
+        }
+        return AjaxResult.success();
+    }
+
+
+}
+
+
+
+
+
+
+
+

@@ -1,0 +1,86 @@
+package ${package.Controller};
+
+import $!{cfg.packagePath}.common.AjaxResult;
+import $!{cfg.packagePath}.entity.dto.${entity}DTO;
+import $!{cfg.packagePath}.service.${table.serviceName};
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
+
+## ----------  把实体类首字母改成小写（得到属性名${propertyName}） ----------
+#set($entity = ${entity})
+#set($first_letter = $entity.substring(0,1).toLowerCase())
+#set($the_rest = $entity.substring(1))
+#set($propertyName= ${first_letter} + ${the_rest})
+
+/**
+* ${entity}Controller
+*
+* @author ${author}
+* @date ${date}
+*/
+@RestController
+@RequestMapping("/${propertyName}")
+public class ${table.controllerName} {
+
+    @Autowired
+    private ${table.serviceName} ${propertyName}Service;
+
+
+    /**
+     * 根据${table.name}表id查询${entity}
+     */
+    @GetMapping("/getById")
+    public AjaxResult selectById(@RequestParam Integer id) {
+        return ${propertyName}Service.select${entity}ById(id);
+    }
+
+    /**
+     * 根据条件查询返回一条${entity}信息
+     */
+    @PostMapping("/getOne")
+    public AjaxResult selectOne(@RequestBody ${entity}DTO ${propertyName}DTO) {
+        return ${propertyName}Service.selectOne${entity}(${propertyName}DTO);
+    }
+
+    /**
+     * 查询${entity}列表
+     */
+    @PostMapping("/list")
+    public AjaxResult list(@RequestBody ${entity}DTO ${propertyName}DTO) throws Exception {
+        return ${propertyName}Service.select${entity}List(${propertyName}DTO);
+    }
+
+    /**
+    * 新增单个${entity}
+    */
+    @PostMapping("/add")
+    public AjaxResult add(@RequestBody ${entity}DTO ${propertyName}DTO) throws Exception {
+        return ${propertyName}Service.add${entity}(${propertyName}DTO);
+    }
+
+    /**
+     * 批量新增${entity}
+     */
+    @PostMapping("/addList")
+    public AjaxResult add${entity}List(@RequestBody List<${entity}DTO> ${propertyName}DTOList) throws Exception {
+        return AjaxResult.success(${propertyName}Service.add${entity}List(${propertyName}DTOList));
+    }
+
+    /**
+     * 根据id修改${entity}
+     */
+    @PostMapping("/edit")
+    public AjaxResult editById(@RequestBody ${entity}DTO ${propertyName}DTO) {
+        return ${propertyName}Service.update${entity}ById(${propertyName}DTO);
+    }
+
+    /**
+     * 根据id删除${entity}
+     */
+    @DeleteMapping("/delete/{id}")
+    public AjaxResult delete(@PathVariable Integer id) {
+        return AjaxResult.success(${propertyName}Service.delete${entity}ById(id));
+    }
+
+}
