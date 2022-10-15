@@ -1,0 +1,42 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhou.jianzhi.mapper.SysRoleMapper">
+    <select id="queryList" resultType="com.zhou.jianzhi.entity.vo.SysRoleVO">
+        select id,role_name,remark,status,create_time,update_time from sys_role
+        <where>
+            <if test="sysRole.id!=null">
+                id=#{sysRole.id}
+            </if>
+            <if test="sysRole.roleName!=null and sysRole.roleName!=''">
+                and role_name like concat('%',#{sysRole.roleName},'%')
+            </if>
+            <if test="sysRole.status!=null and sysRole.status!=''">
+                and status=#{sysRole.status}
+            </if>
+        </where>
+    </select>
+    <select id="selectUserId" resultType="java.lang.String">
+        SELECT pe.id from
+
+        (select us.id,us.emp_id
+            FROM
+                base_user AS us
+                INNER JOIN ( SELECT user_id AS id, role_id FROM sys_user_role ) AS ro ON us.id = ro.id
+            WHERE
+                ro.role_id =#{role} ) as pe
+        left join base_employee as be on pe.emp_id  = be.id
+        where be.dept_id = #{deptid}
+    </select>
+    <select id="selectUserIdByRole" resultType="java.lang.String">
+        SELECT DISTINCT(user_id) from sys_user_role where role_id in
+        <foreach item="item" index="index" collection="roles" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+    <select id="selectByRoleId" resultType="com.zhou.jianzhi.entity.vo.SysRoleVO">
+       select id,role_name,remark,status,create_time,update_time from sys_role where id=#{roleId}
+    </select>
+
+
+</mapper>

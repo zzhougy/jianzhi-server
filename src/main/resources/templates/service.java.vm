@@ -1,0 +1,80 @@
+package ${package.Service};
+
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.IService;
+import $!{cfg.packagePath}.common.AjaxResult;
+import $!{cfg.packagePath}.entity.dto.${entity}DTO;
+import $!{cfg.packagePath}.entity.po.${entity};
+
+import java.util.List;
+
+## ----------  把实体类首字母改成小写（得到属性名） ----------
+#set($entity = ${entity})
+#set($first_letter = $entity.substring(0,1).toLowerCase())
+#set($the_rest = $entity.substring(1))
+#set($propertyName= ${first_letter} + ${the_rest})
+
+/**
+ * ${entity}Service接口
+ *
+ * @author ${author}
+ * @date ${date}
+ */
+public interface ${table.serviceName} extends IService<${entity}> {
+
+
+    /**
+    * 根据${table.name}表id查询
+    *
+    * @param id
+    * @return
+    */
+    public AjaxResult select${entity}ById(Integer id);
+
+    /**
+     * 根据条件查询返回一条${entity}信息
+     */
+    public AjaxResult selectOne${entity}(${entity}DTO ${propertyName}DTO);
+
+    /**
+     * 查询${entity}列表
+     *
+     * @param ${propertyName}DTO
+     * @return ${table.name}集合
+     */
+    public AjaxResult select${entity}List(${entity}DTO ${propertyName}DTO) throws Exception;
+
+    /**
+    * 新增单个${entity}
+    *
+    * @param ${propertyName}DTO
+    * @return
+    */
+    public AjaxResult add${entity}(${entity}DTO ${propertyName}DTO);
+
+    /**
+     * 批量新增${entity}
+     *
+     * @param ${propertyName}DTOList
+     * @return 结果
+     */
+    public AjaxResult add${entity}List(List<${entity}DTO> ${propertyName}DTOList) throws Exception;
+
+    /**
+     * 根据id修改${entity}
+     *
+     * @param ${propertyName}DTO
+     * @return 结果
+     */
+    public AjaxResult update${entity}ById(${entity}DTO ${propertyName}DTO);
+
+    /**
+     * 删除${entity}
+     *
+     * @param id 需要删除的ID
+     * @return 结果
+     */
+    public AjaxResult delete${entity}ById(Integer id);
+
+
+}
