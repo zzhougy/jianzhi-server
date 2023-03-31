@@ -1,7 +1,7 @@
-# jianzhi-server
-
-#### 介绍
-校园兼职平台-服务端 jianzhi-server
+1.  校园兼职平台服务端 jianzhi-portal https://github.com/zzhougy/jianzhi-server.git
+2.  校园兼职平台门户 jianzhi-portal https://github.com/zzhougy/jianzhi-portal.git
+3.  校园兼职平台聊天界面 jianzhi-webim https://github.com/zzhougy/jianzhi-webim.git
+4.  校园兼职平台后台管理 jianzhi-webim https://github.com/zzhougy/jianzhi-manage-web.git
 
 本系统用户分为三类：后台管理员（超级管理员，普通管理员），求职者（学生），
 招聘人员（负责人、普通招聘人员）。本系统主要分为前台和后台，前台面向的是所有用
@@ -20,8 +20,3 @@
 2) 管理员可以查看、编辑招聘单位发布的兼职信息
 3) 管理员对违规的账号或招聘单位进行封禁处理
 4) 超级管理员能够管理平台所有用户的角色及角色所拥有的权限
-
-1.  校园兼职平台服务端 jianzhi-portal https://github.com/zzhougy/jianzhi-server.git
-2.  校园兼职平台门户 jianzhi-portal https://github.com/zzhougy/jianzhi-portal.git
-3.  校园兼职平台聊天界面 jianzhi-webim https://github.com/zzhougy/jianzhi-webim.git
-4.  校园兼职平台后台管理 jianzhi-webim https://github.com/zzhougy/jianzhi-manage-web.git
