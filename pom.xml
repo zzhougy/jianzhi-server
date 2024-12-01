@@ -12,7 +12,7 @@
     <artifactId>jianzhi</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>jianzhi</name>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <description>兼职系统</description>
 
     <properties>
