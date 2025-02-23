@@ -17,6 +17,17 @@
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
+
+-- ----------------------------
+-- 创建数据库 jianzhi
+-- ----------------------------
+DROP DATABASE IF EXISTS `jianzhi`;
+CREATE DATABASE `jianzhi` CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+
+-- 切换到 jianzhi 数据库
+USE `jianzhi`;
+
+
 -- ----------------------------
 -- Table structure for aliyun_oss
 -- ----------------------------
